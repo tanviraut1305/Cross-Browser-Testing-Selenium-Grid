@@ -7,6 +7,10 @@ pipeline {
         skipDefaultCheckout(true)
     }
 
+    environment {
+        COMPOSE_EXE = 'C:\\Users\\Atul_Raut\\AppData\\Local\\Programs\\DockerDesktop\\resources\\cli-plugins\\docker-compose.exe'
+    }
+
     stages {
         stage('Checkout Project') {
             steps {
@@ -22,9 +26,9 @@ pipeline {
 
         stage('Start Selenium Grid') {
             steps {
-                bat 'docker compose up -d'
+                bat '"%COMPOSE_EXE%" up -d'
                 bat 'python wait_grid.py'
-                bat 'docker compose ps'
+                bat '"%COMPOSE_EXE%" ps'
                 bat 'if not exist reports mkdir reports'
             }
         }
@@ -79,7 +83,7 @@ pipeline {
                 allowEmptyArchive: true,
                 fingerprint: true
             )
-            bat 'docker compose down -v'
+            bat '"%COMPOSE_EXE%" down -v'
         }
     }
 }
